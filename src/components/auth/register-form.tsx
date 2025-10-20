@@ -5,6 +5,8 @@ import {
   type RegisterSchema,
 } from '../../lib/schemas/register-schema';
 import { useRegister } from '../../lib/hooks/auth/useRegister';
+import InputForm from './input-form';
+import { PasswordInput } from './password-input';
 
 const RegisterForm = () => {
   const form = useForm<RegisterSchema>({
@@ -26,83 +28,41 @@ const RegisterForm = () => {
         Register
       </h2>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          First Name
-        </label>
-        <input
-          type="text"
-          {...form.register('firstName')}
-          className="mt-1 w-full rounded-lg border border-gray-300 p-2 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none"
-        />
-        {form.formState.errors.firstName && (
-          <p className="text-red-500 text-sm mt-1">
-            {form.formState.errors.firstName.message}
-          </p>
-        )}
-      </div>
+      <InputForm
+        label="First Name"
+        name="firstName"
+        register={form.register}
+        error={form.formState.errors.firstName}
+      />
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Last Name
-        </label>
-        <input
-          type="text"
-          {...form.register('lastName')}
-          className="mt-1 w-full rounded-lg border border-gray-300 p-2 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none"
-        />
-        {form.formState.errors.lastName && (
-          <p className="text-red-500 text-sm mt-1">
-            {form.formState.errors.lastName.message}
-          </p>
-        )}
-      </div>
+      <InputForm
+        label="Last Name"
+        name="lastName"
+        register={form.register}
+        error={form.formState.errors.lastName}
+      />
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          type="email"
-          {...form.register('email')}
-          className="mt-1 w-full rounded-lg border border-gray-300 p-2 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none"
-        />
-        {form.formState.errors.email && (
-          <p className="text-red-500 text-sm mt-1">
-            {form.formState.errors.email.message}
-          </p>
-        )}
-      </div>
+      <InputForm
+        label="Email"
+        name="email"
+        type="email"
+        register={form.register}
+        error={form.formState.errors.email}
+      />
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Password
-        </label>
-        <input
-          type="password"
-          {...form.register('password')}
-          className="mt-1 w-full rounded-lg border border-gray-300 p-2 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none"
-        />
-        {form.formState.errors.password && (
-          <p className="text-red-500 text-sm mt-1">
-            {form.formState.errors.password.message}
-          </p>
-        )}
-      </div>
+      <PasswordInput
+        label="Password"
+        name="password"
+        register={form.register}
+        error={form.formState.errors.password}
+      />
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Confirm Password
-        </label>
-        <input
-          type="password"
-          {...form.register('confirmPassword')}
-          className="mt-1 w-full rounded-lg border border-gray-300 p-2 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none"
-        />
-        {form.formState.errors.confirmPassword && (
-          <p className="text-red-500 text-sm mt-1">
-            {form.formState.errors.confirmPassword.message}
-          </p>
-        )}
-      </div>
+      <PasswordInput
+        label="Confirm Password"
+        name="confirmPassword"
+        register={form.register}
+        error={form.formState.errors.confirmPassword}
+      />
 
       {isError && (
         <p className="text-red-600 text-center text-sm">{error.message}</p>

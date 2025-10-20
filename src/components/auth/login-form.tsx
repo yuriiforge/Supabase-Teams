@@ -2,6 +2,8 @@ import { useForm } from 'react-hook-form';
 import { loginSchema, type LoginSchema } from '../../lib/schemas/login-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLogin } from '../../lib/hooks/auth/useLogin';
+import InputForm from './input-form';
+import { PasswordInput } from './password-input';
 
 const LoginForm = () => {
   const form = useForm<LoginSchema>({
@@ -31,35 +33,20 @@ const LoginForm = () => {
         Login
       </h2>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          type="email"
-          {...form.register('email')}
-          className="mt-1 w-full rounded-lg border border-gray-300 p-2 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none"
-        />
-        {form.formState.errors.email && (
-          <p className="text-red-500 text-sm mt-1">
-            {form.formState.errors.email.message}
-          </p>
-        )}
-      </div>
+      <InputForm
+        label="Email"
+        name="email"
+        type="email"
+        register={form.register}
+        error={form.formState.errors.email}
+      />
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Password
-        </label>
-        <input
-          type="password"
-          {...form.register('password')}
-          className="mt-1 w-full rounded-lg border border-gray-300 p-2 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none"
-        />
-        {form.formState.errors.password && (
-          <p className="text-red-500 text-sm mt-1">
-            {form.formState.errors.password.message}
-          </p>
-        )}
-      </div>
+      <PasswordInput
+        label="Password"
+        name="password"
+        register={form.register}
+        error={form.formState.errors.password}
+      />
 
       {loginMutation.isError && (
         <p className="text-red-600 text-center text-sm">
