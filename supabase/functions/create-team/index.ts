@@ -84,12 +84,20 @@ Deno.serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (err) {
-    console.error("create-team error:", err);
+    console.error("create-product error:", err);
+
     return new Response(
       JSON.stringify({
-        error: err instanceof Error ? err.message : String(err),
+        error: err instanceof Error
+          ? err.message
+          : typeof err === "string"
+          ? err
+          : JSON.stringify(err),
       }),
-      { status: 400, headers: corsHeaders },
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 400,
+      },
     );
   }
 });

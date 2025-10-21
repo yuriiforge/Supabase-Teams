@@ -1,3 +1,4 @@
+import CreateProductModal from '../components/dashboard/create-product';
 import CreateTeamForm from '../components/dashboard/create-team';
 import JoinTeamForm from '../components/dashboard/join-team';
 import { useProfile } from '../lib/hooks/useProfile';
@@ -14,6 +15,8 @@ const Dashboard = () => {
       <div>
         <h1 className="text-3xl font-bold">Welcome to your Dashboard!</h1>
         <p>Your Team ID is: {profile.team_id}</p>
+
+        <CreateProductModal />
       </div>
     );
   }
