@@ -1,0 +1,12 @@
+# .supabaseignore
+
+# Ignore the frontend dependencies
+
+node_modules
+
+# Optional: Ignore other build artifacts
+
+dist
+build
+.next
+.vscode

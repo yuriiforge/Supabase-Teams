@@ -11,12 +11,22 @@ import { PasswordInput } from './password-input';
 const RegisterForm = () => {
   const form = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+    },
   });
 
   const { mutate, isPending, isError, error } = useRegister();
 
   const onSubmit = (data: RegisterSchema) => {
-    mutate(data);
+    mutate(data, {
+      onSuccess: () => {
+        window.location.href = '/home';
+      },
+    });
   };
 
   return (

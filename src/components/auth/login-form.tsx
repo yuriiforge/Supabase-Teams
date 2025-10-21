@@ -19,7 +19,7 @@ const LoginForm = () => {
   const onSubmit = (values: LoginSchema) => {
     loginMutation.mutate(values, {
       onSuccess: () => {
-        window.location.href = '/dashboard';
+        window.location.href = '/home';
       },
     });
   };
