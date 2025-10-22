@@ -1,10 +1,29 @@
+import { useState } from 'react';
 import CreateProductModal from '../components/dashboard/create-product';
 import CreateTeamForm from '../components/dashboard/create-team';
 import JoinTeamForm from '../components/dashboard/join-team';
 import { useProfile } from '../lib/hooks/useProfile';
+import { useGetProducts } from '../lib/hooks/products/useGetProducts';
+import ProductFilter from '../components/products/products-filter';
+import ProductsTable from '../components/products/products-table';
+import Pagination from '../components/products/products-pagination';
 
 const Dashboard = () => {
-  const { data: profile, isLoading } = useProfile();
+  const { data: profile } = useProfile();
+  const [page, setPage] = useState(1);
+  const [status, setStatus] = useState('');
+  const [search, setSearch] = useState('');
+
+  const { data, isLoading, isError, isFetching } = useGetProducts({
+    page,
+    limit: 10,
+    creator: profile?.id,
+    team: profile?.team_id,
+    status,
+    search,
+    enabled: !!profile?.team_id,
+  });
+  console.log(data);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -17,6 +36,31 @@ const Dashboard = () => {
         <p>Your Team ID is: {profile.team_id}</p>
 
         <CreateProductModal />
+
+        <ProductFilter
+          status={status}
+          search={search}
+          onStatusChange={setStatus}
+          onSearchChange={setSearch}
+        />
+
+        <ProductsTable
+          products={data?.data ?? []}
+          isLoading={isLoading}
+          isError={isError}
+        />
+
+        {data && data.count > 0 && (
+          <Pagination
+            page={page}
+            pageSize={10}
+            total={data.count}
+            onPageChange={setPage}
+          />
+        )}
+
+        {/* Optional fetching indicator */}
+        {isFetching && <p>Refreshing products...</p>}
       </div>
     );
   }

@@ -5,7 +5,7 @@ import { useAuthStore } from "../stores/useAuthStore";
 const getProfile = async (userId: string) => {
     const { data, error } = await supabase
         .from("profiles")
-        .select("team_id, full_name, avatar_url")
+        .select("id, team_id, full_name, avatar_url")
         .eq("id", userId)
         .single();
 

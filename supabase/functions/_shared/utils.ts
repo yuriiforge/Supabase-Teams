@@ -1,4 +1,5 @@
 import { SupabaseClient } from "npm:@supabase/supabase-js@2";
+import { corsHeaders } from "./cors.ts";
 
 /**
  * Securely fetches the logged-in user's team_id from their profile.
@@ -25,4 +26,41 @@ export async function getMyTeamId(supabase: SupabaseClient): Promise<string> {
     }
 
     return data.team_id;
+}
+
+/**
+ * A reusable error handler for all Edge Functions.
+ * It logs the error and returns a consistent JSON error response.
+ */
+type ErrorWithMessage = {
+    message: string;
+    status?: number;
+};
+
+export function errorHandler(err: unknown, defaultStatus = 500) {
+    console.error("[Edge Function Error]", err);
+
+    let message = "An unknown error occurred.";
+    let status = defaultStatus;
+
+    if (err instanceof Error) {
+        message = err.message;
+        status = (err as ErrorWithMessage).status ?? defaultStatus;
+    } else if (typeof err === "object" && err !== null) {
+        const maybeError = err as ErrorWithMessage;
+        if (typeof maybeError.message === "string") {
+            message = maybeError.message;
+            status = maybeError.status ?? defaultStatus;
+        }
+    } else if (typeof err === "string") {
+        message = err;
+    }
+
+    return new Response(
+        JSON.stringify({ error: message }),
+        {
+            status,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+    );
 }
