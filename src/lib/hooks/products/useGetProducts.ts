@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { ProductsResponse } from "../../types/product";
 import { productsService } from "../../../services/products-service";
 import type { QueryParams } from "../../types/query-params";
+import { QUERY_KEYS } from "../../constants/query-keys";
 
 export const useGetProducts = ({
     page = 1,
@@ -15,7 +16,7 @@ export const useGetProducts = ({
     const params: QueryParams = { page, limit, status, search, creator, team };
 
     return useQuery<ProductsResponse, Error>({
-        queryKey: ["products", page, limit, status, search, creator],
+        queryKey: [QUERY_KEYS.PRODUCTS, params],
         queryFn: () => productsService.fetchProducts(params),
         enabled,
     });

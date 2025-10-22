@@ -7,10 +7,12 @@ import {
   type CreateProductSchema,
 } from '../../lib/schemas/create-product-schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { CreateProductPayload } from '../../lib/types/product';
 
 export default function CreateProductModal() {
   const [isOpen, setIsOpen] = useState(false);
-  const { mutate: createProduct, isPending } = useCreateProduct();
+  const [isUploading, setIsUploading] = useState(false);
+  const { mutate: createProduct } = useCreateProduct();
   const {
     register,
     handleSubmit,
@@ -27,6 +29,7 @@ export default function CreateProductModal() {
   });
 
   const onSubmit = async (data: CreateProductSchema) => {
+    setIsUploading(true);
     let image_url = '';
 
     if (data.productPhoto) {
@@ -35,15 +38,21 @@ export default function CreateProductModal() {
       );
     }
 
-    createProduct(
-      { title: data.title, description: data.description, image_url },
-      {
-        onSuccess: () => {
-          reset();
-          setIsOpen(false);
-        },
-      }
-    );
+    const payload: CreateProductPayload = {
+      title: data.title,
+      description: data.description,
+      image_url,
+    };
+
+    createProduct(payload, {
+      onSuccess: () => {
+        reset();
+        setIsOpen(false);
+      },
+      onSettled: () => {
+        setIsUploading(false);
+      },
+    });
   };
 
   return (
@@ -121,10 +130,10 @@ export default function CreateProductModal() {
 
               <button
                 type="submit"
-                disabled={isPending}
+                disabled={isUploading}
                 className="bg-green-600 text-white py-2 rounded hover:bg-green-700 disabled:opacity-50"
               >
-                {isPending ? 'Creating...' : 'Create'}
+                {isUploading ? 'Creating...' : 'Create'}
               </button>
             </form>
           </div>

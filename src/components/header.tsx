@@ -12,8 +12,6 @@ export const Header = () => {
     navigate(ROUTES.LOGIN);
   };
 
-  console.log(user);
-
   return (
     <header className="bg-white shadow-md">
       <nav className="container mx-auto px-6 py-3 flex justify-between items-center">

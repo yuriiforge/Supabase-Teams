@@ -1,25 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { supabase } from "../../../config/supabase-client";
-
-const createProduct = async (product: {
-    title: string;
-    description?: string;
-    image_url?: string;
-}) => {
-    const { data, error } = await supabase.functions.invoke("create-product", {
-        body: product,
-    });
-
-    if (error) throw new Error(error.message);
-    return data;
-};
+import { productsService } from "../../../services/products-service";
+import type { CreateProductPayload } from "../../types/product";
 
 export const useCreateProduct = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: createProduct,
+        mutationFn: (data: CreateProductPayload) =>
+            productsService.createProduct(data),
         onSuccess: (data) => {
             toast.success("Product created successfully!");
             console.log("Created product:", data);

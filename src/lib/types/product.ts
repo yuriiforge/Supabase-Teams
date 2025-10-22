@@ -8,7 +8,7 @@ export interface Product {
     status: Status;
     created_at: string;
     updated_at: string;
-    user_id: {
+    profiles: {
         id: string;
         full_name: string;
         avatar_url?: string;
@@ -18,4 +18,10 @@ export interface Product {
 export type ProductsResponse = {
     data: Product[];
     count: number;
+};
+
+export type CreateProductPayload = {
+    title: string;
+    description?: string;
+    image_url?: string;
 };

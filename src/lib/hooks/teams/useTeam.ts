@@ -1,20 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { supabase } from "../../../config/supabase-client";
-
-const createTeam = async (teamName: string) => {
-    const { data, error } = await supabase.functions.invoke("create-team", {
-        body: { teamName },
-    });
-
-    if (error) throw new Error(error.message);
-    return data;
-};
+import { teamsService } from "../../../services/teams-service";
 
 export const useCreateTeam = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: createTeam,
+        mutationFn: (teamName: string) => teamsService.createTeam(teamName),
         onSuccess: () => {
             toast.success("Team created successfully!");
             queryClient.invalidateQueries({ queryKey: ["profile"] });
@@ -25,19 +16,10 @@ export const useCreateTeam = () => {
     });
 };
 
-const joinTeam = async (inviteCode: string) => {
-    const { data, error } = await supabase.functions.invoke("join-team", {
-        body: { inviteCode },
-    });
-
-    if (error) throw new Error(error.message);
-    return data;
-};
-
 export const useJoinTeam = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: joinTeam,
+        mutationFn: (inviteCode: string) => teamsService.joinTeam(inviteCode),
         onSuccess: () => {
             toast.success("Joined team successfully!");
             queryClient.invalidateQueries({ queryKey: ["profile"] });
