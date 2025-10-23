@@ -28,9 +28,6 @@ Deno.serve(async (req) => {
       return errorHandler({ message: "Product not found", status: 404 });
     }
 
-    if (product.user_id !== user.id) {
-      return errorHandler({ message: "Unauthorized", status: 403 });
-    }
     if (product.status !== "Draft") {
       return errorHandler({
         message: "Cannot edit active product",
