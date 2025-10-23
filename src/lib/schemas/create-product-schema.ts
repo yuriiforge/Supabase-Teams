@@ -10,11 +10,11 @@ export const createProductSchema = z.object({
         12,
         "Please, provide more detailed description",
     ),
-    productPhoto: z.file().refine(
-        (file) => file.size <= MAX_FILE_SIZE,
+    productPhoto: z.file().optional().nullable().refine(
+        (file) => !file || file.size <= MAX_FILE_SIZE,
         "Maximum allowed file size is 5 MB",
     ).refine(
-        (file) => ACCEPTED_IMAGE_TYPES.includes(file.type),
+        (file) => !file || ACCEPTED_IMAGE_TYPES.includes(file.type),
         "Only JPG/WEBP/PNG",
     ),
 });

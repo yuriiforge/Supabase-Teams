@@ -51,6 +51,22 @@ Deno.serve(async (req) => {
 
     if (status !== undefined) {
       if (status === "Active") {
+        const finalProduct = {
+          ...product,
+          ...updateData,
+        };
+
+        if (
+          !finalProduct.title || !finalProduct.description ||
+          !finalProduct.image_url
+        ) {
+          return errorHandler({
+            message:
+              "Title, description, and an image are all required to publish this product.",
+            status: 400,
+          });
+        }
+
         updateData.status = status;
       } else {
         return errorHandler({

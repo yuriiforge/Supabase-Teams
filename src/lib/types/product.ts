@@ -23,5 +23,5 @@ export type ProductsResponse = {
 export type CreateProductPayload = {
     title: string;
     description?: string;
-    image_url?: string;
+    image_url?: string | null;
 };

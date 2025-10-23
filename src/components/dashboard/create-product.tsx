@@ -31,12 +31,16 @@ export default function CreateProductModal() {
 
   const onSubmit = async (data: CreateProductSchema) => {
     setIsUploading(true);
-    let image_url = '';
+    let image_url: string | null = '';
 
     if (data.productPhoto) {
       image_url = await supabaseTeamsProductPhotoService.createFile(
         data.productPhoto
       );
+    }
+
+    if (!data.productPhoto) {
+      image_url = null;
     }
 
     const payload: CreateProductPayload = {

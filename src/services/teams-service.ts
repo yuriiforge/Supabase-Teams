@@ -1,24 +1,32 @@
-import { supabase } from "../config/supabase-client";
+import { axiosClient } from "../config/axios-client";
+import { EDGE_FUNCTIONS_NAMES } from "../lib/constants/edge-functions-names";
+import { handleRequestError } from "../lib/utils/handleRequestError";
 
 class TeamsService {
     constructor() {}
 
     async createTeam(teamName: string) {
-        const { data, error } = await supabase.functions.invoke("create-team", {
-            body: { teamName },
-        });
-
-        if (error) throw new Error(error.message);
-        return data;
+        try {
+            const response = await axiosClient.post(
+                EDGE_FUNCTIONS_NAMES.TEAMS.CREATE,
+                { teamName },
+            );
+            return response.data;
+        } catch (err) {
+            handleRequestError(err);
+        }
     }
 
     async joinTeam(inviteCode: string) {
-        const { data, error } = await supabase.functions.invoke("join-team", {
-            body: { inviteCode },
-        });
-
-        if (error) throw new Error(error.message);
-        return data;
+        try {
+            const response = await axiosClient.post(
+                EDGE_FUNCTIONS_NAMES.TEAMS.JOIN,
+                { inviteCode },
+            );
+            return response.data;
+        } catch (err) {
+            handleRequestError(err);
+        }
     }
 }
 

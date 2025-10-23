@@ -73,7 +73,7 @@ export const ProductForm = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
-      {isEditing ? (
+      {isEditing && (
         <Controller
           name="productPhoto"
           control={control}
@@ -89,9 +89,16 @@ export const ProductForm = ({
             />
           )}
         />
-      ) : (
-        <p>No image provided yet.</p>
       )}
+
+      {!isEditing && product.image_url && (
+        <img
+          src={product.image_url}
+          alt={product.title}
+          className="w-full max-w-xs h-64 object-cover rounded"
+        />
+      )}
+      {!isEditing && !product.image_url && <p>No image provided yet.</p>}
 
       <input
         {...register('title')}
