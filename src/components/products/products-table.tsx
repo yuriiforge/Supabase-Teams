@@ -1,10 +1,12 @@
 import type { ProductsResponse } from '../../lib/types/product';
+import ProductStatusBadge from './product-status-badge';
 
 interface ProductsTableProps {
   products: ProductsResponse['data'];
   isLoading: boolean;
   isError: boolean;
   error?: Error | undefined;
+  onRowClick?: (product: ProductsResponse['data'][number]) => void;
 }
 
 const ProductsTable: React.FC<ProductsTableProps> = ({
@@ -12,6 +14,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
   isLoading,
   isError,
   error,
+  onRowClick,
 }) => {
   if (isLoading) return <p className="text-gray-500">Loading products...</p>;
   if (isError) return <p className="text-red-500">Error: {error?.message}</p>;
@@ -48,6 +51,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
         ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}
         hover:bg-gray-100 transition-colors duration-200
       `}
+              onClick={() => onRowClick?.(product)}
             >
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                 {product.title}
@@ -56,17 +60,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
                 {product.description}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                <span
-                  className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                    product.status === 'Active'
-                      ? 'bg-green-100 text-green-800'
-                      : product.status === 'Draft'
-                      ? 'bg-yellow-100 text-yellow-800'
-                      : 'bg-red-100 text-red-800'
-                  }`}
-                >
-                  {product.status}
-                </span>
+                <ProductStatusBadge productStatus={product.status} />
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                 {new Date(product.created_at).toLocaleString()}

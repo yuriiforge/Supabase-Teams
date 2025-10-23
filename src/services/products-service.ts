@@ -38,6 +38,41 @@ class ProductsService {
         if (error) throw new Error(error.message);
         return data;
     }
+
+    async updateProduct(product: {
+        productId: string;
+        title?: string;
+        description?: string;
+        image_url?: string;
+    }) {
+        const { data, error } = await supabase.functions.invoke(
+            EDGE_FUNCTIONS_NAMES.UPDATE_PRODUCT,
+            { method: "POST", body: product },
+        );
+
+        if (error) throw new Error(error.message);
+        return data;
+    }
+
+    async publishProduct(productId: string) {
+        const { data, error } = await supabase.functions.invoke(
+            EDGE_FUNCTIONS_NAMES.UPDATE_PRODUCT,
+            { body: { productId, status: "Active" } },
+        );
+
+        if (error) throw new Error(error.message);
+        return data;
+    }
+
+    async deleteProduct(productId: string) {
+        const { data, error } = await supabase.functions.invoke(
+            EDGE_FUNCTIONS_NAMES.DELETE_PRODUCT,
+            { body: { productId } },
+        );
+
+        if (error) throw new Error(error.message);
+        return data;
+    }
 }
 
 export const productsService = new ProductsService();

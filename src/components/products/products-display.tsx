@@ -3,6 +3,8 @@ import ProductFilter from './products-filter';
 import ProductsTable from './products-table';
 import Pagination from './products-pagination';
 import { useGetProducts } from '../../lib/hooks/products/useGetProducts';
+import type { Product } from '../../lib/types/product';
+import ProductModal from './product-modal';
 
 interface ProductsDisplayProps {
   initialPage?: number;
@@ -17,6 +19,7 @@ const ProductsDisplay: React.FC<ProductsDisplayProps> = ({
   const [status, setStatus] = useState('');
   const [search, setSearch] = useState('');
   const [queryParams, setQueryParams] = useState({ status: '', search: '' });
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   const { data, isLoading, isError, isFetching } = useGetProducts({
     ...queryParams,
@@ -24,8 +27,6 @@ const ProductsDisplay: React.FC<ProductsDisplayProps> = ({
     limit: pageSize,
     enabled: true,
   });
-
-  console.log(data);
 
   return (
     <div>
@@ -41,6 +42,7 @@ const ProductsDisplay: React.FC<ProductsDisplayProps> = ({
         products={data?.data ?? []}
         isLoading={isLoading}
         isError={isError}
+        onRowClick={(product) => setEditingProduct(product)}
       />
 
       {data && data.count > 0 && (
@@ -53,6 +55,13 @@ const ProductsDisplay: React.FC<ProductsDisplayProps> = ({
       )}
 
       {isFetching && <p>Refreshing products...</p>}
+
+      {editingProduct && (
+        <ProductModal
+          product={editingProduct}
+          onClose={() => setEditingProduct(null)}
+        />
+      )}
     </div>
   );
 };

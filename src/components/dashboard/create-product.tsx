@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { useCreateProduct } from '../../lib/hooks/products/useCreateProduct';
 import { supabaseTeamsProductPhotoService } from '../../services/supabase-storage-service';
 import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import type { CreateProductPayload } from '../../lib/types/product';
 import {
   createProductSchema,
   type CreateProductSchema,
 } from '../../lib/schemas/create-product-schema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import type { CreateProductPayload } from '../../lib/types/product';
+import { ImageUpload } from '../ui/image-upload';
 
 export default function CreateProductModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -104,27 +105,12 @@ export default function CreateProductModal() {
               <Controller
                 name="productPhoto"
                 control={control}
-                render={({ field }) => (
-                  <>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => field.onChange(e.target.files?.[0])}
-                      className="text-sm"
-                    />
-                    {field.value && (
-                      <img
-                        src={URL.createObjectURL(field.value)}
-                        alt="Preview"
-                        className="w-32 h-32 object-cover rounded-md mt-2 border"
-                      />
-                    )}
-                    {errors.productPhoto && (
-                      <p className="text-red-500 text-sm">
-                        {errors.productPhoto.message}
-                      </p>
-                    )}
-                  </>
+                render={({ field, fieldState }) => (
+                  <ImageUpload
+                    field={field}
+                    error={fieldState.error?.message}
+                    onRemove={() => field.onChange(undefined)}
+                  />
                 )}
               />
 
