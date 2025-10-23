@@ -2,19 +2,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { productsService } from "../../../services/products-service";
 import { QUERY_KEYS } from "../../constants/query-keys";
-
-interface UpdateProductInput {
-    productId: string;
-    title?: string;
-    description?: string;
-    image_url?: string;
-}
+import type { UpdateProductSchema } from "../../schemas/update-product-schema";
 
 export const useUpdateProduct = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (data: UpdateProductInput) =>
+        mutationFn: (data: UpdateProductSchema & { productId: string }) =>
             productsService.updateProduct(data),
         onSuccess: () => {
             toast.success("Product updated successfully!");

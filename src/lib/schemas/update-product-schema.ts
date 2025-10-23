@@ -5,14 +5,15 @@ import {
 } from "../constants/image-constants";
 
 export const updateProductSchema = z.object({
-    title: z.string().min(2, "Title should contain at least 2 characters"),
+    title: z.string().min(2, "Title should contain at least 2 characters")
+        .optional(),
     description: z.string().min(
         12,
         "Please, provide more detailed description",
-    ),
-    image_url: z.string().optional(),
+    ).optional(),
+    image_url: z.string().nullable(),
     productPhoto: z
-        .file()
+        .file().optional()
         .nullable()
         .refine(
             (file) => !file || file.size <= MAX_FILE_SIZE,

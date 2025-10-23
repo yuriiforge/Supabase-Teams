@@ -2,6 +2,7 @@ import { axiosClient } from "../config/axios-client";
 import { supabase } from "../config/supabase-client";
 import { API_ENDPOINTS } from "../lib/constants/api-endpoints";
 import { EDGE_FUNCTIONS_NAMES } from "../lib/constants/edge-functions-names";
+import type { UpdateProductSchema } from "../lib/schemas/update-product-schema";
 import type { ProductsResponse } from "../lib/types/product";
 import type { QueryParams } from "../lib/types/query-params";
 
@@ -39,12 +40,7 @@ class ProductsService {
         return data;
     }
 
-    async updateProduct(product: {
-        productId: string;
-        title?: string;
-        description?: string;
-        image_url?: string;
-    }) {
+    async updateProduct(product: UpdateProductSchema & { productId: string }) {
         const { data, error } = await supabase.functions.invoke(
             EDGE_FUNCTIONS_NAMES.UPDATE_PRODUCT,
             { method: "POST", body: product },

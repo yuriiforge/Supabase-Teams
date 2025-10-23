@@ -44,12 +44,14 @@ export function ImageUpload<T extends FieldValues>({
 
   return (
     <div className="relative inline-block">
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => field.onChange(e.target.files?.[0])}
-        className="text-sm"
-      />
+      {!preview && (
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => field.onChange(e.target.files?.[0])}
+          className="text-sm"
+        />
+      )}
 
       {preview && (
         <div className="relative mt-2 w-32 h-32">

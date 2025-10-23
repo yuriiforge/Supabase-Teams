@@ -4,7 +4,7 @@ import ProductsTable from './products-table';
 import Pagination from './products-pagination';
 import { useGetProducts } from '../../lib/hooks/products/useGetProducts';
 import type { Product } from '../../lib/types/product';
-import ProductModal from './product-modal';
+import { ProductModal } from './product-modal/product-modal';
 
 interface ProductsDisplayProps {
   initialPage?: number;

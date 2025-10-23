@@ -109,7 +109,7 @@ export default function CreateProductModal() {
                   <ImageUpload
                     field={field}
                     error={fieldState.error?.message}
-                    onRemove={() => field.onChange(undefined)}
+                    onRemove={() => field.onChange(null)}
                   />
                 )}
               />
