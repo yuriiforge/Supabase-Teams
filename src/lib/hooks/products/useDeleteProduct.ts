@@ -15,7 +15,6 @@ export const useDeleteProduct = () => {
         },
         onError: (error) => {
             toast.error(error.message || "Failed to delete product");
-            console.error(error);
         },
     });
 };

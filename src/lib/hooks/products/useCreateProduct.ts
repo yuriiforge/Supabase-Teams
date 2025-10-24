@@ -9,14 +9,12 @@ export const useCreateProduct = () => {
     return useMutation({
         mutationFn: (data: CreateProductPayload) =>
             productsService.createProduct(data),
-        onSuccess: (data) => {
+        onSuccess: () => {
             toast.success("Product created successfully!");
-            console.log("Created product:", data);
             queryClient.invalidateQueries({ queryKey: ["products"] });
         },
         onError: (error) => {
             toast.error(error.message);
-            console.error(error);
         },
     });
 };

@@ -1,4 +1,4 @@
-interface PaginationProps {
+interface Props {
   page: number;
   pageSize: number;
   total: number;
@@ -6,13 +6,13 @@ interface PaginationProps {
   maxVisiblePages?: number; // optional, default to 5
 }
 
-const Pagination: React.FC<PaginationProps> = ({
+const Pagination = ({
   page,
   pageSize,
   total,
   onPageChange,
   maxVisiblePages = 5,
-}) => {
+}: Props) => {
   const totalPages = Math.ceil(total / pageSize);
 
   if (totalPages === 0) return null;

@@ -1,7 +1,7 @@
 import type { ProductsResponse } from '../../lib/types/product';
 import ProductStatusBadge from './product-status-badge';
 
-interface ProductsTableProps {
+interface Props {
   products: ProductsResponse['data'];
   isLoading: boolean;
   isError: boolean;
@@ -10,14 +10,14 @@ interface ProductsTableProps {
   onlineUserIds: Set<string>;
 }
 
-const ProductsTable: React.FC<ProductsTableProps> = ({
+const ProductsTable = ({
   products,
   isLoading,
   isError,
   error,
   onRowClick,
   onlineUserIds,
-}) => {
+}: Props) => {
   if (isLoading) return <p className="text-gray-500">Loading products...</p>;
   if (isError) return <p className="text-red-500">Error: {error?.message}</p>;
 

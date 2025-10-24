@@ -11,7 +11,7 @@ interface Props {
   onApply: () => void;
 }
 
-const ProductFilter: React.FC<Props> = ({
+const ProductFilter = ({
   status,
   search,
   authors,
@@ -19,7 +19,7 @@ const ProductFilter: React.FC<Props> = ({
   onSearchChange,
   onAuthorChange,
   onApply,
-}) => {
+}: Props) => {
   const [selectedAuthor, setSelectedAuthor] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

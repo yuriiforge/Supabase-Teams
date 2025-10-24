@@ -4,7 +4,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const AuthWrapper: React.FC<Props> = ({ title, description, children }) => (
+const AuthWrapper = ({ title, description, children }: Props) => (
   <div className="flex w-full flex-col items-center justify-center px-4 ">
     <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-md space-y-4">
       {title && <h1 className="text-2xl font-semibold text-center">{title}</h1>}

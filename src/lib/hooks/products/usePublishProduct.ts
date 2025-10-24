@@ -15,7 +15,6 @@ export const usePublishProduct = () => {
         },
         onError: (error) => {
             toast.error(error.message || "Failed to publish product");
-            console.error(error);
         },
     });
 };

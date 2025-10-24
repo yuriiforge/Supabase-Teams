@@ -9,8 +9,7 @@ export const useLogin = () => {
     onSuccess: () => {
       toast.success("Login successful!");
     },
-    onError: (error) => {
-      console.error("Failed to login", error.message);
+    onError: () => {
       toast.error("Failed to login");
     },
   });

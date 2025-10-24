@@ -48,7 +48,6 @@ class TeamsService {
                 EDGE_FUNCTIONS_NAMES.TEAMS.GET_TEAM_INFO,
                 { teamId },
             );
-            console.log(response.data);
             return response.data;
         } catch (err) {
             handleRequestError(err);

@@ -8,8 +8,7 @@ export const useGoogleAuth = () => {
         onSuccess: () => {
             toast.success("Signed in successfully!");
         },
-        onError: (error) => {
-            console.error("Google sign-in failed:", error.message);
+        onError: () => {
             toast.error("Google sign-in failed:");
         },
     });

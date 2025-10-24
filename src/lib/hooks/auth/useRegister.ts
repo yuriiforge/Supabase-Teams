@@ -8,11 +8,9 @@ export const useRegister = () => {
     mutationFn: async (data: RegisterSchema) =>
       supabaseAuthService.register(data),
     onSuccess: () => {
-      console.log("Registration successful! Please check your email.");
       toast.success("Registration successful! Please check your email.");
     },
-    onError: (error) => {
-      console.error("Registration failed:", error.message);
+    onError: () => {
       toast.error("Registration failed:");
     },
   });
