@@ -6,6 +6,8 @@ import Dashboard from '../pages/dashboard';
 import LoginPage from '../pages/login';
 import RegisterPage from '../pages/register';
 import { GuestRoute } from '../components/auth/guest-route';
+import ForgotPasswordPage from '../pages/forgot-password';
+import { ResetPasswordPage } from '../pages/reset-password';
 
 export const router = createBrowserRouter([
   {
@@ -13,7 +15,11 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <MainLayout />,
-        children: [{ path: ROUTES.HOME, element: <Dashboard /> }],
+        children: [
+          { path: ROUTES.HOME, element: <Dashboard /> },
+          { path: ROUTES.FORGOT_PASSWORD, element: <ForgotPasswordPage /> },
+          { path: ROUTES.RESET_PASSWORD, element: <ResetPasswordPage /> },
+        ],
       },
     ],
   },

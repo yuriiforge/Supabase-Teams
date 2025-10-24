@@ -1,13 +1,19 @@
-interface AuthCardProps {
+interface Props {
+  title?: string;
+  description?: string;
   children: React.ReactNode;
 }
 
-const AuthCard: React.FC<AuthCardProps> = ({ children }) => (
-  <div className="flex w-full flex-col items-center justify-center px-4">
+const AuthWrapper: React.FC<Props> = ({ title, description, children }) => (
+  <div className="flex w-full flex-col items-center justify-center px-4 ">
     <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-md space-y-4">
-      {children}
+      {title && <h1 className="text-2xl font-semibold text-center">{title}</h1>}
+      {description && (
+        <p className="text-gray-500 text-sm text-center">{description}</p>
+      )}
+      <div>{children}</div>
     </div>
   </div>
 );
 
-export default AuthCard;
+export default AuthWrapper;
