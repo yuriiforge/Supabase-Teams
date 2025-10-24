@@ -20,8 +20,10 @@ const ProductsTable: React.FC<ProductsTableProps> = ({
 }) => {
   if (isLoading) return <p className="text-gray-500">Loading products...</p>;
   if (isError) return <p className="text-red-500">Error: {error?.message}</p>;
-  if (!products.length)
+
+  if (!isLoading && products?.length === 0) {
     return <p className="text-gray-500">No products found.</p>;
+  }
 
   return (
     <div className="overflow-x-auto border rounded-lg shadow-sm">

@@ -31,7 +31,7 @@ const ProductsDisplay: React.FC<ProductsDisplayProps> = ({
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const { data: teamMembers } = useGetTeamMembers(profile?.team_id);
 
-  const { data, isLoading, isError, isFetching } = useGetProducts({
+  const { data, isLoading, isError } = useGetProducts({
     ...queryParams,
     page,
     limit: pageSize,
@@ -88,8 +88,6 @@ const ProductsDisplay: React.FC<ProductsDisplayProps> = ({
           onPageChange={setPage}
         />
       )}
-
-      {isFetching && <p>Refreshing products...</p>}
 
       {editingProduct && (
         <ProductModal

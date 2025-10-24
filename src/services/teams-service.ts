@@ -31,12 +31,22 @@ class TeamsService {
 
     async getTeamMembers(teamId: string) {
         try {
-            console.log(teamId);
             const response = await axiosClient.post(
                 EDGE_FUNCTIONS_NAMES.TEAMS.GET_TEAM_USERS,
                 { teamId },
             );
 
+            return response.data;
+        } catch (err) {
+            handleRequestError(err);
+        }
+    }
+
+    async getTeamName() {
+        try {
+            const response = await axiosClient.get(
+                EDGE_FUNCTIONS_NAMES.TEAMS.GET_TEAM_INFO,
+            );
             return response.data;
         } catch (err) {
             handleRequestError(err);
