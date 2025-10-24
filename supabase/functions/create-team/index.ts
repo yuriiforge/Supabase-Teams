@@ -1,32 +1,9 @@
-import { createSupabaseUserClient } from "../_shared/supabase-client.ts";
 import { corsHeaders } from "../_shared/cors.ts";
-import { SupabaseClient } from "npm:@supabase/supabase-js@2";
-
-function generateInviteCode(length = 6) {
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  return Array.from(
-    { length },
-    () => chars[Math.floor(Math.random() * chars.length)],
-  ).join("");
-}
-
-async function generateUniqueInviteCode(supabase: SupabaseClient) {
-  let code = "";
-  let exists = true;
-
-  while (exists) {
-    code = generateInviteCode();
-    const { data } = await supabase
-      .from("teams")
-      .select("id")
-      .eq("invite_code", code)
-      .maybeSingle();
-
-    exists = !!data;
-  }
-
-  return code;
-}
+import {
+  createSupabaseAdminClient,
+  createSupabaseUserClient,
+} from "../_shared/supabase-client.ts";
+import { errorHandler, generateUniqueInviteCode } from "../_shared/utils.ts";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -35,6 +12,7 @@ Deno.serve(async (req) => {
 
   try {
     const supabase = createSupabaseUserClient(req);
+    const supabaseAdmin = createSupabaseAdminClient();
 
     const {
       data: { user },
@@ -79,25 +57,20 @@ Deno.serve(async (req) => {
       throw new Error(profileError.message);
     }
 
+    await supabaseAdmin
+      .from("team_members")
+      .insert({
+        team_id: team.id,
+        user_id: user.id,
+        role: "Owner",
+        joined_at: new Date().toISOString(),
+      });
+
     return new Response(JSON.stringify({ success: true, team }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (err) {
-    console.error("create-product error:", err);
-
-    return new Response(
-      JSON.stringify({
-        error: err instanceof Error
-          ? err.message
-          : typeof err === "string"
-          ? err
-          : JSON.stringify(err),
-      }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 400,
-      },
-    );
+    return errorHandler(err);
   }
 });

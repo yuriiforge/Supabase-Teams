@@ -7,6 +7,7 @@ import type { Product } from '../../lib/types/product';
 import { ProductModal } from './product-modal/product-modal';
 import { useTeamPresence } from '../../lib/hooks/teams/useTeamPresence';
 import { useProfile } from '../../lib/hooks/useProfile';
+import { useGetTeamMembers } from '../../lib/hooks/teams/useGetTeamMembers';
 
 interface ProductsDisplayProps {
   initialPage?: number;
@@ -21,8 +22,14 @@ const ProductsDisplay: React.FC<ProductsDisplayProps> = ({
   const [page, setPage] = useState(initialPage);
   const [status, setStatus] = useState('');
   const [search, setSearch] = useState('');
-  const [queryParams, setQueryParams] = useState({ status: '', search: '' });
+  const [creatorId, setCreatorId] = useState('');
+  const [queryParams, setQueryParams] = useState({
+    status: '',
+    search: '',
+    creator: '',
+  });
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const { data: teamMembers } = useGetTeamMembers(profile?.team_id);
 
   const { data, isLoading, isError, isFetching } = useGetProducts({
     ...queryParams,
@@ -53,13 +60,17 @@ const ProductsDisplay: React.FC<ProductsDisplayProps> = ({
 
   return (
     <div>
-      <ProductFilter
-        status={status}
-        search={search}
-        onStatusChange={setStatus}
-        onSearchChange={setSearch}
-        onApply={() => setQueryParams({ status, search })}
-      />
+      {teamMembers && (
+        <ProductFilter
+          status={status}
+          search={search}
+          authors={teamMembers.users ?? []}
+          onStatusChange={setStatus}
+          onSearchChange={setSearch}
+          onAuthorChange={setCreatorId}
+          onApply={() => setQueryParams({ status, search, creator: creatorId })}
+        />
+      )}
 
       <ProductsTable
         products={data?.data ?? []}

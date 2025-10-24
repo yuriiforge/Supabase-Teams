@@ -3,6 +3,7 @@ import {
   createSupabaseAdminClient,
   createSupabaseUserClient,
 } from "../_shared/supabase-client.ts";
+import { errorHandler } from "../_shared/utils.ts";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -47,20 +48,20 @@ Deno.serve(async (req) => {
       throw new Error("Failed to join team. You might already be on one.");
     }
 
+    await supabaseAdmin
+      .from("team_members")
+      .insert({
+        team_id: team.id,
+        user_id: user.id,
+        role: "Member",
+        joined_at: new Date().toISOString(),
+      });
+
     return new Response(JSON.stringify({ teamId: team.id }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error(error);
-
-    const message = error instanceof Error
-      ? error.message
-      : "An unknown error occurred.";
-
-    return new Response(JSON.stringify({ error: message }), {
-      status: 400,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return errorHandler(error);
   }
 });

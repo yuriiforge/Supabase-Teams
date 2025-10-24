@@ -28,6 +28,20 @@ class TeamsService {
             handleRequestError(err);
         }
     }
+
+    async getTeamMembers(teamId: string) {
+        try {
+            console.log(teamId);
+            const response = await axiosClient.post(
+                EDGE_FUNCTIONS_NAMES.TEAMS.GET_TEAM_USERS,
+                { teamId },
+            );
+
+            return response.data;
+        } catch (err) {
+            handleRequestError(err);
+        }
+    }
 }
 
 export const teamsService = new TeamsService();

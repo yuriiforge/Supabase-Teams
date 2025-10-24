@@ -64,3 +64,33 @@ export function errorHandler(err: unknown, defaultStatus = 500) {
         },
     );
 }
+
+/**
+ * Function that generate unique ID for the team
+ */
+
+export function generateInviteCode(length = 6) {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    return Array.from(
+        { length },
+        () => chars[Math.floor(Math.random() * chars.length)],
+    ).join("");
+}
+
+export async function generateUniqueInviteCode(supabase: SupabaseClient) {
+    let code = "";
+    let exists = true;
+
+    while (exists) {
+        code = generateInviteCode();
+        const { data } = await supabase
+            .from("teams")
+            .select("id")
+            .eq("invite_code", code)
+            .maybeSingle();
+
+        exists = !!data;
+    }
+
+    return code;
+}

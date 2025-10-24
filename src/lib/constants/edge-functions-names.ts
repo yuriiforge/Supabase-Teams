@@ -6,5 +6,6 @@ export const EDGE_FUNCTIONS_NAMES = {
     TEAMS: {
         CREATE: "create-team",
         JOIN: "join-team",
+        GET_TEAM_USERS: "get-team-users",
     },
 } as const;
