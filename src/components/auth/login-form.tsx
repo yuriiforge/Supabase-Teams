@@ -4,6 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useLogin } from '../../lib/hooks/auth/useLogin';
 import InputForm from './input-form';
 import { PasswordInput } from './password-input';
+import { Link } from 'react-router-dom';
+import { ROUTES } from '../../constants/routes';
 
 const LoginForm = () => {
   const form = useForm<LoginSchema>({
@@ -47,6 +49,15 @@ const LoginForm = () => {
         register={form.register}
         error={form.formState.errors.password}
       />
+
+      <div className="text-right text-sm">
+        <Link
+          to={ROUTES.FORGOT_PASSWORD}
+          className="font-medium text-indigo-600 hover:text-indigo-500 hover:underline"
+        >
+          Forgot password?
+        </Link>
+      </div>
 
       {loginMutation.isError && (
         <p className="text-red-600 text-center text-sm">

@@ -8,6 +8,7 @@ import RegisterPage from '../pages/register';
 import { GuestRoute } from '../components/auth/guest-route';
 import ForgotPasswordPage from '../pages/forgot-password';
 import { ResetPasswordPage } from '../pages/reset-password';
+import PasswordChangeProtectedRoute from '../components/auth/password-change-route';
 
 export const router = createBrowserRouter([
   {
@@ -15,11 +16,7 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <MainLayout />,
-        children: [
-          { path: ROUTES.HOME, element: <Dashboard /> },
-          { path: ROUTES.FORGOT_PASSWORD, element: <ForgotPasswordPage /> },
-          { path: ROUTES.RESET_PASSWORD, element: <ResetPasswordPage /> },
-        ],
+        children: [{ path: ROUTES.HOME, element: <Dashboard /> }],
       },
     ],
   },
@@ -31,6 +28,18 @@ export const router = createBrowserRouter([
         children: [
           { path: ROUTES.LOGIN, element: <LoginPage /> },
           { path: ROUTES.REGISTER, element: <RegisterPage /> },
+        ],
+      },
+    ],
+  },
+  {
+    element: <PasswordChangeProtectedRoute />,
+    children: [
+      {
+        element: <MainLayout />,
+        children: [
+          { path: ROUTES.FORGOT_PASSWORD, element: <ForgotPasswordPage /> },
+          { path: ROUTES.RESET_PASSWORD, element: <ResetPasswordPage /> },
         ],
       },
     ],
