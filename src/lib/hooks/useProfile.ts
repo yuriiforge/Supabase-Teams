@@ -1,26 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "../../config/supabase-client";
 import { useAuthStore } from "../stores/useAuthStore";
-
-const getProfile = async (userId: string) => {
-    const { data, error } = await supabase
-        .from("profiles")
-        .select("id, team_id, full_name, avatar_url")
-        .eq("id", userId)
-        .single();
-
-    if (error) {
-        throw new Error(error.message);
-    }
-    return data;
-};
+import { profileService } from "../../services/profile-service";
 
 export const useProfile = () => {
     const user = useAuthStore((state) => state.user);
 
     return useQuery({
         queryKey: ["profile", user?.id],
-        queryFn: () => getProfile(user!.id),
+        queryFn: async () => {
+            if (!user) throw new Error("No user available");
+            return profileService.getProfile();
+        },
         enabled: !!user,
         staleTime: Infinity,
     });

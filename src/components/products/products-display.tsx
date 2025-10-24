@@ -48,7 +48,7 @@ const ProductsDisplay: React.FC<ProductsDisplayProps> = ({
     };
   }, [profile]);
 
-  const { onlineUsers } = useTeamPresence(profile?.team_id, profileForPresence);
+  const { onlineUsers } = useTeamPresence(profileForPresence, profile?.team_id);
   const onlineUserIds = useMemo(
     () => new Set(onlineUsers.map((u) => u.id)),
     [onlineUsers]

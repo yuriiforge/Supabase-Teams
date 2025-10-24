@@ -42,11 +42,13 @@ class TeamsService {
         }
     }
 
-    async getTeamName() {
+    async getTeamName(teamId: string) {
         try {
-            const response = await axiosClient.get(
+            const response = await axiosClient.post(
                 EDGE_FUNCTIONS_NAMES.TEAMS.GET_TEAM_INFO,
+                { teamId },
             );
+            console.log(response.data);
             return response.data;
         } catch (err) {
             handleRequestError(err);

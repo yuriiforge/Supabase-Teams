@@ -9,4 +9,6 @@ export const EDGE_FUNCTIONS_NAMES = {
         GET_TEAM_USERS: "get-team-users",
         GET_TEAM_INFO: "get-team-info",
     },
+
+    GET_PROFILE: "get-profile",
 } as const;

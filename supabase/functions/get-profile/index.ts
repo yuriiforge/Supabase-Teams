@@ -14,15 +14,17 @@ Deno.serve(async (req) => {
     if (authError || !user) {
       return errorHandler({ message: "Not authenticated", status: 401 });
     }
-    const { teamId } = await req.json();
 
-    const { data, error } = await supabase.from("teams").select("id, name").eq(
-      "id",
-      teamId,
-    ).single();
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id, full_name, avatar_url, team_id")
+      .eq("id", user.id)
+      .single();
 
     if (error) {
-      return errorHandler(error);
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 400,
+      });
     }
 
     return new Response(JSON.stringify(data), {

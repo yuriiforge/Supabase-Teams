@@ -5,21 +5,25 @@ import { useProfile } from '../lib/hooks/useProfile';
 
 import ProductsDisplay from '../components/products/products-display';
 import { useGetTeamInfo } from '../lib/hooks/teams/useGetTeamInfo';
+import { useAuthStore } from '../lib/stores/useAuthStore';
 
 const Dashboard = () => {
+  const { isLoading: isAuthLoading } = useAuthStore();
   const { data: profile, isLoading: isProfileLoading } = useProfile();
-  const { data: teamName, isLoading: isTeamLoading } = useGetTeamInfo();
+  const { data: teamName, isLoading: isTeamLoading } = useGetTeamInfo(
+    profile?.team_id
+  );
 
-  if (isProfileLoading || isTeamLoading) {
+  if (isAuthLoading || isProfileLoading || isTeamLoading) {
     return <p className="text-gray-500">Loading...</p>;
   }
 
-  if (profile?.team_id && teamName) {
+  if (!isProfileLoading && teamName) {
     return (
       <div>
         <h1 className="text-3xl font-bold">Welcome to your Dashboard!</h1>
         <p className="my-2">
-          Your Team is: <b>{teamName.data.name}</b>
+          Your Team is: <b>{teamName.name}</b>
         </p>
 
         <CreateProductModal />
@@ -28,7 +32,6 @@ const Dashboard = () => {
       </div>
     );
   }
-
   return (
     <div className="flex flex-col items-center gap-10">
       <h1 className="text-3xl font-bold">Welcome!</h1>

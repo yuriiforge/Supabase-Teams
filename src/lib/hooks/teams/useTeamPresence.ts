@@ -14,7 +14,7 @@ interface OnlineUser {
     avatar_url: string;
 }
 
-export function useTeamPresence(teamId: string, profile: Profile | null) {
+export function useTeamPresence(profile: Profile | null, teamId?: string) {
     const [onlineUsers, setOnlineUsers] = useState<OnlineUser[]>([]);
 
     useEffect(() => {
