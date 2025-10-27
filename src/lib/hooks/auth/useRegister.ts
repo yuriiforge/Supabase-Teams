@@ -5,10 +5,11 @@ import toast from "react-hot-toast";
 
 export const useRegister = () => {
   return useMutation({
-    mutationFn: async (data: RegisterSchema) =>
-      supabaseAuthService.register(data),
+    mutationFn: async (data: RegisterSchema) => {
+      return supabaseAuthService.register(data);
+    },
     onSuccess: () => {
-      toast.success("Registration successful! Please check your email.");
+      toast.success("Registered successfully !");
     },
     onError: () => {
       toast.error("Registration failed:");

@@ -7,8 +7,10 @@ import {
 import { useRegister } from '../../lib/hooks/auth/useRegister';
 import InputForm from './input-form';
 import { PasswordInput } from './password-input';
+import { useNavigate } from 'react-router';
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
   const form = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -24,7 +26,7 @@ const RegisterForm = () => {
   const onSubmit = (data: RegisterSchema) => {
     mutate(data, {
       onSuccess: () => {
-        window.location.href = '/home';
+        navigate('/home');
       },
     });
   };
