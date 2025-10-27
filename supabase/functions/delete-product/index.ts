@@ -26,9 +26,6 @@ Deno.serve(async (req) => {
     if (fetchError || !product) {
       return errorHandler({ message: "Product not found", status: 404 });
     }
-    if (product.user_id !== user.id) {
-      return errorHandler({ message: "Unauthorized", status: 403 });
-    }
 
     const { data, error } = await supabase
       .from("products")
@@ -39,7 +36,10 @@ Deno.serve(async (req) => {
 
     if (error) throw error;
 
-    return new Response(JSON.stringify(data), { status: 200 });
+    return new Response(JSON.stringify(data), {
+      status: 200,
+      headers: corsHeaders,
+    });
   } catch (err: unknown) {
     return errorHandler(err);
   }
