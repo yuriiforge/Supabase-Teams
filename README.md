@@ -1,7 +1,7 @@
 # 🧩 Teams App
 
-A modern **team management platform** built with **React**, **TypeScript**, and **Supabase**.  
-The app enables users to **create, join, and manage teams**, view **real-time member presence**, and perform **secure authentication** — all with a clean and responsive UI.
+A modern **product management platform** built with **React**, **TypeScript**, and **Supabase**.  
+The app enables users to **create, join, and manage teams + products**, view **real-time member presence**, and perform **secure authentication** — all with a clean and responsive UI.
 
 ---
 
